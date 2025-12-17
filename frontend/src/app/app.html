@@ -1,33 +1,32 @@
-<h2>Create Product</h2>
+<h2>Product CRUD</h2>
 
 <input placeholder="Title" [(ngModel)]="title" />
 <input type="number" placeholder="Price" [(ngModel)]="price" />
 <input type="number" placeholder="Count" [(ngModel)]="count" />
 
-<button (click)="createProduct()">Create</button>
+<button *ngIf="editingId === null" (click)="createProduct()">Create</button>
+<button *ngIf="editingId !== null" (click)="updateProduct()">Update</button>
+<button *ngIf="editingId !== null" (click)="resetForm()">Cancel</button>
 
 <hr />
 
-<table border="1">
-  <thead>
-    <tr>
-      <th>ID</th>
-      <th>Title</th>
-      <th>Price</th>
-      <th>Count</th>
-      <th>Action</th>
-    </tr>
-  </thead>
+<table border="1" cellpadding="5">
+  <tr>
+    <th>ID</th>
+    <th>Title</th>
+    <th>Price</th>
+    <th>Count</th>
+    <th>Actions</th>
+  </tr>
 
-  <tbody>
-    <tr *ngFor="let product of products">
-      <td>{{ product.id }}</td>
-      <td>{{ product.title }}</td>
-      <td>{{ product.price }}</td>
-      <td>{{ product.count }}</td>
-      <td>
-        <button (click)="deleteProduct(product.id)">Delete</button>
-      </td>
-    </tr>
-  </tbody>
+  <tr *ngFor="let product of products; trackBy: trackById">
+    <td>{{ product.id }}</td>
+    <td>{{ product.title }}</td>
+    <td>{{ product.price }}</td>
+    <td>{{ product.count }}</td>
+    <td>
+      <button (click)="editProduct(product)">Edit</button>
+      <button (click)="deleteProduct(product.id)" [disabled]="!product.id">Delete</button>
+    </td>
+  </tr>
 </table>

@@ -3,11 +3,11 @@ from .models import Product
 from .database import engine
 
 
-def create_product(product: Product):
+def create_product(product: Product) -> Product:
     with Session(engine) as session:
         session.add(product)
         session.commit()
-        session.refresh(product)
+        session.refresh(product)  
         return product
 
 
@@ -36,11 +36,11 @@ def update_product(product_id: int, new_product: Product):
         return product
 
 
-def delete_product(product_id: int):
+def delete_product(product_id: int) -> bool:
     with Session(engine) as session:
         product = session.get(Product, product_id)
         if not product:
-            return None
+            return False
 
         session.delete(product)
         session.commit()
