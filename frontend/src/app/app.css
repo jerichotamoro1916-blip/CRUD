@@ -1,0 +1,45 @@
+.container {
+  max-width: 900px;
+  margin: 40px auto;
+  color: white;
+}
+
+.subtitle {
+  text-align: center;
+  color: #aaa;
+}
+
+.form {
+  display: grid;
+  grid-template-columns: 2fr 1fr 1fr auto;
+  gap: 10px;
+  margin: 20px 0;
+}
+
+input {
+  padding: 10px;
+  border-radius: 6px;
+  border: none;
+}
+
+button {
+  background: linear-gradient(90deg, #7f00ff, #e100ff);
+  color: white;
+  border: none;
+  border-radius: 6px;
+  cursor: pointer;
+}
+
+.delete {
+  background: #ff3b3b;
+}
+
+table {
+  width: 100%;
+  border-collapse: collapse;
+}
+
+th, td {
+  padding: 12px;
+  border-bottom: 1px solid #333;
+}

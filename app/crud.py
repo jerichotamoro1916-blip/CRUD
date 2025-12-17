@@ -1,66 +1,47 @@
 from sqlmodel import Session, select
-from .models import Item
+from .models import Product
 from .database import engine
 
 
-
-
-def create_item(item: Item):
+def create_product(product: Product):
     with Session(engine) as session:
-        session.add(item)
+        session.add(product)
         session.commit()
-        session.refresh(item)
-        return item
+        session.refresh(product)
+        return product
 
 
-
-def get_items():
+def get_products():
     with Session(engine) as session:
-        return session.exec(select(Item)).all()
+        return session.exec(select(Product)).all()
 
 
-
-
-def get_item(item_id: int):
+def get_product(product_id: int):
     with Session(engine) as session:
-        return session.get(Item, item_id)
+        return session.get(Product, product_id)
 
 
-
-
-def update_item(item_id: int, new_item: Item):
+def update_product(product_id: int, new_product: Product):
     with Session(engine) as session:
-        item = session.get(Item, item_id)
-        if not item:
+        product = session.get(Product, product_id)
+        if not product:
             return None
-        item.name = new_item.name
-        item.description = new_item.description
-        session.add(item)
+
+        product.title = new_product.title
+        product.price = new_product.price
+        product.count = new_product.count
+
         session.commit()
-        session.refresh(item)
-        return item
+        session.refresh(product)
+        return product
 
 
-def delete_item(item_id: int):
+def delete_product(product_id: int):
     with Session(engine) as session:
-        item = session.get(Item, item_id)
-        if not item:
+        product = session.get(Product, product_id)
+        if not product:
             return None
-        session.delete(item)
+
+        session.delete(product)
         session.commit()
         return True
-
-from sqlmodel import Session, select
-from .models import Item
-from .database import engine
-
-def create_item(item: Item):
-    with Session(engine) as session:
-        session.add(item)
-        session.commit()
-        session.refresh(item)
-        return item
-
-def get_items():
-    with Session(engine) as session:
-        return session.exec(select(Item)).all()

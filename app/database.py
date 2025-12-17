@@ -1,14 +1,10 @@
 from sqlmodel import SQLModel, create_engine
-import os
-from dotenv import load_dotenv
+from pathlib import Path
 
+BASE_DIR = Path(__file__).resolve().parent.parent
+DATABASE_URL = f"sqlite:///{BASE_DIR}/database.db"
 
-load_dotenv()
-
-
-DATABASE_URL = os.getenv("DATABASE_URL", "sqlite:///database.db")
 engine = create_engine(DATABASE_URL, echo=True)
-
 
 def create_db():
     SQLModel.metadata.create_all(engine)

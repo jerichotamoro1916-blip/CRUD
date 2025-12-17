@@ -1,15 +1,26 @@
 from fastapi import FastAPI, HTTPException
+from fastapi.middleware.cors import CORSMiddleware
+
 from .database import create_db
-from .models import Item
+from .models import Product
 from .crud import (
-    create_item,
-    get_items,
-    get_item,
-    update_item,
-    delete_item,
+    create_product,
+    get_products,
+    get_product,
+    update_product,
+    delete_product,
 )
 
-app = FastAPI(title="Simple CRUD API")
+app = FastAPI(title="Product CRUD API")
+
+# 🔥 CORS (required for Angular)
+app.add_middleware(
+    CORSMiddleware,
+    allow_origins=["http://localhost:4200"],
+    allow_credentials=True,
+    allow_methods=["*"],
+    allow_headers=["*"],
+)
 
 
 @app.on_event("startup")
@@ -17,35 +28,35 @@ def on_startup():
     create_db()
 
 
-@app.post("/items", response_model=Item)
-def add_item(item: Item):
-    return create_item(item)
+@app.post("/products", response_model=Product)
+def add_product(product: Product):
+    return create_product(product)
 
 
-@app.get("/items", response_model=list[Item])
-def list_items():
-    return get_items()
+@app.get("/products", response_model=list[Product])
+def list_products():
+    return get_products()
 
 
-@app.get("/items/{item_id}", response_model=Item)
-def read_item(item_id: int):
-    item = get_item(item_id)
-    if not item:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return item
+@app.get("/products/{product_id}", response_model=Product)
+def read_product(product_id: int):
+    product = get_product(product_id)
+    if not product:
+        raise HTTPException(status_code=404, detail="Product not found")
+    return product
 
 
-@app.put("/items/{item_id}", response_model=Item)
-def edit_item(item_id: int, item: Item):
-    updated = update_item(item_id, item)
+@app.put("/products/{product_id}", response_model=Product)
+def edit_product(product_id: int, product: Product):
+    updated = update_product(product_id, product)
     if not updated:
-        raise HTTPException(status_code=404, detail="Item not found")
+        raise HTTPException(status_code=404, detail="Product not found")
     return updated
 
 
-@app.delete("/items/{item_id}")
-def remove_item(item_id: int):
-    deleted = delete_item(item_id)
+@app.delete("/products/{product_id}")
+def remove_product(product_id: int):
+    deleted = delete_product(product_id)
     if not deleted:
-        raise HTTPException(status_code=404, detail="Item not found")
-    return {"message": "Item deleted"}
+        raise HTTPException(status_code=404, detail="Product not found")
+    return {"message": "Product deleted"}
